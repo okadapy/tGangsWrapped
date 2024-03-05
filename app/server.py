@@ -90,8 +90,11 @@ class ConnectionManager:
 
     async def broadcast_matrix(self, game: Game):
         for player in self.active_connections:
-            matrix = game.render(players[player])
-            await self.send_matrix(player, matrix)
+            try:
+                matrix = game.render(players[player])
+                await self.send_matrix(player, matrix)
+            except:
+                self.disconnect(player)
 
     async def send_can_place(self, websocket: WebSocket, delay):
         await asyncio.sleep(delay)
@@ -101,11 +104,7 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 players: dict[WebSocket, Player] = {}
-game = Game()
-print(game.grid)
-for row in game.grid:
-    for item in row:
-        print(item)
+
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -153,8 +152,5 @@ async def websocket_handler(websocket: WebSocket):
 
                 
                 await manager.broadcast_matrix(game)
-
-            
-        except Exception as e:
-            print(e)
+        except:
             await manager.disconnect(websocket)
