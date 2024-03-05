@@ -43,14 +43,14 @@ class Game:
         self.grid[y][x]["player"] = player
 
     def bomb(self, x, y, player):
-        for n_y in range(y - 1, y + 1, 1):
-            for n_x in range(x - 1, x + 1, 1):
+        for n_y in range(y - 1, y + 2, 1):
+            for n_x in range(x - 1, x + 2, 1):
                 if self.grid[n_y][n_x] != player and not self.grid[n_y][n_x]["armor"]:
                     self.grid[n_y][n_x]["player"] = None
 
     def armor(self, x, y, player):
-        for n_y in range(y - 1, y + 1, 1):
-            for n_x in range(x - 1, x + 1, 1):
+        for n_y in range(y - 1, y + 2, 1):
+            for n_x in range(x - 1, x + 2, 1):
                 if self.grid[n_y][n_x]["player"] == player and not self.grid[n_y][n_x]["armor"]:
                     self.grid[n_y][n_x]["armor"] = True
 
