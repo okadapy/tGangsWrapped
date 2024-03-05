@@ -104,7 +104,7 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 players: dict[WebSocket, Player] = {}
-
+game = Game()
 
 
 @app.get("/", response_class=HTMLResponse)
