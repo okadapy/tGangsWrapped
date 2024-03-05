@@ -48,6 +48,12 @@ class Game:
                 if self.grid[n_y][n_x] != player and not self.grid[n_y][n_x]["armor"]:
                     self.grid[n_y][n_x]["player"] = None
 
+    def armor(self, x, y, player):
+        for n_y in range(y - 1, y + 1, 1):
+            for n_x in range(x - 1, x + 1, 1):
+                if self.grid[n_y][n_x]["player"] == player and not self.grid[n_y][n_x]["armor"]:
+                    self.grid[n_y][n_x]["armor"] = True
+
     def render(self, player):
         matrix = []
         for row in self.grid:
@@ -134,6 +140,9 @@ async def websocket_handler(websocket: WebSocket):
                     
                 elif data["type"] == "bomb":
                     game.bomb(data["x"], data["y"], players[websocket])
+                
+                elif data["type"] == "armor":
+                    game.armor(data["x"], data["y"])
 
                 if players[websocket].boost:
                     await manager.send_can_place(websocket, 0)
