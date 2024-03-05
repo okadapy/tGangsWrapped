@@ -142,7 +142,7 @@ async def websocket_handler(websocket: WebSocket):
                     game.bomb(data["x"], data["y"], players[websocket])
                 
                 elif data["type"] == "armor":
-                    game.armor(data["x"], data["y"])
+                    game.armor(data["x"], data["y"], players[websocket])
 
                 if players[websocket].boost:
                     await manager.send_can_place(websocket, 0)
@@ -157,4 +157,4 @@ async def websocket_handler(websocket: WebSocket):
             
         except Exception as e:
             print(e)
-            return
+            await manager.disconnect(websocket)
